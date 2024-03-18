@@ -30,7 +30,6 @@ def summary_statistics(df):
 def standardize(df):
 	return (df-df.mean()) / df.std()
 
-print(standardize(df))
 
 # Given a dataframe df and a number of clusters k, return a pandas series y
 # specifying an assignment of instances to clusters, using kmeans.

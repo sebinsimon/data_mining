@@ -18,8 +18,8 @@ def read_csv_3(data_file):
 	df = pd.read_csv(data_file, encoding='latin-1')
 	return df
 
-df = read_csv_3('coronavirus_tweets.csv')
-
+# Read from the file
+# df = read_csv_3('coronavirus_tweets.csv')
 
 # Return a list with the possible sentiments that a tweet might have.
 def get_sentiments(df):
@@ -33,7 +33,6 @@ def second_most_popular_sentiment(df):
 		raise ValueError("There must be at least two unique sentiments in the DataFrame.")
 	# Return the second most popular sentiment (assuming index starts from 0)
 	return sentiment_count.index[1]
-
 
 
 # Return the date (string as it appears in the data) with the greatest number of extremely positive tweets.
@@ -56,7 +55,6 @@ def remove_non_alphabetic_chars(df):
 # Modify the dataframe df with tweets after removing characters which are not alphabetic or whitespaces.
 def remove_multiple_consecutive_whitespaces(df):
 	df['OriginalTweet'] = df['OriginalTweet'].str.replace(r'\s+', ' ')
-
 
 # Given a dataframe where each tweet is one string with words separated by single whitespaces,
 # tokenize every tweet by converting it into a list of words (strings).
@@ -111,41 +109,3 @@ def mnb_predict(df):
 # return the classification accuracy rounded in the 3rd decimal digit.
 def mnb_accuracy(y_pred,y_true):
 	return round((y_pred == y_true).mean(), 3)
-
-
-
-# Split the data into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(df['OriginalTweet'], df['Sentiment'], test_size=0.2, random_state=42)
-
-# Convert tokens to strings for CountVectorizer
-df['OriginalTweet'] = df['OriginalTweet'].apply(lambda tweet: ' '.join(tweet))
-
-# Build the Multinomial Naive Bayes classifier
-clf = MultinomialNB()
-
-# Initialize CountVectorizer
-count_vectorizer = CountVectorizer()
-
-# Transform the training and testing sets
-X_train_counts = count_vectorizer.fit_transform(X_train)
-X_test_counts = count_vectorizer.transform(X_test)
-
-# Train the classifier
-clf.fit(X_train_counts, y_train)
-
-# Predict on the training set
-train_pred = clf.predict(X_train_counts)
-
-# Predict on the testing set
-test_pred = clf.predict(X_test_counts)
-
-# Calculate training and testing accuracy
-train_accuracy = mnb_accuracy(train_pred, y_train)
-test_accuracy = mnb_accuracy(test_pred, y_test)
-
-print("Training accuracy:", train_accuracy)
-print("Testing accuracy:", test_accuracy)
-
-
-
-
